@@ -12,17 +12,46 @@
 
 ActiveRecord::Schema.define(version: 2020_05_22_122048) do
 
-# Could not dump table "answers" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
+  enable_extension "plpgsql"
 
-# Could not dump table "questions" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+  create_table "answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "answer"
+    t.boolean "correct"
+    t.integer "order", null: false
+    t.uuid "question_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
 
-# Could not dump table "quizzes" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.text "question"
+    t.integer "order", null: false
+    t.uuid "quiz_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["quiz_id"], name: "index_questions_on_quiz_id"
+  end
 
-# Could not dump table "users" because of following StandardError
-#   Unknown type 'uuid' for column 'id'
+  create_table "quizzes", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "title"
+    t.uuid "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_quizzes_on_user_id"
+  end
+
+  create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.string "email"
+    t.string "name"
+    t.string "auth_token"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["auth_token"], name: "index_users_on_auth_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+  end
 
   add_foreign_key "answers", "questions"
   add_foreign_key "questions", "quizzes"
