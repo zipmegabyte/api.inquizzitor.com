@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :messages
+  resources :participant_answers
+  resources :participants
+  resources :parties
   resources :answers
   resources :questions
   resources :quizzes
