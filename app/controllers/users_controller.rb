@@ -8,6 +8,13 @@ class UsersController < ApplicationController
     render json: @users
   end
 
+  # GET /user?email=<user_email>
+  def get_by_email
+    user = User.find_by! email: params[:email]
+
+    render json: user, include: [ :quizzes ]
+  end
+
   # GET /users/1
   def show
     render json: @user, include: [ :quizzes ]

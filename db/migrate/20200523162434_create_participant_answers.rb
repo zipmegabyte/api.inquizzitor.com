@@ -3,6 +3,7 @@ class CreateParticipantAnswers < ActiveRecord::Migration[6.0]
     create_table :participant_answers, id: :uuid do |t|
       t.references :participant, null: false, foreign_key: true, type: :uuid
       t.references :answer, null: false, foreign_key: true, type: :uuid
+      t.boolean :correct, null: false
 
       t.timestamps
     end

@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2020_05_23_163501) do
 
   create_table "answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "answer"
-    t.boolean "correct"
+    t.boolean "correct", null: false
     t.integer "order", null: false
     t.uuid "question_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2020_05_23_163501) do
   create_table "participant_answers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.uuid "participant_id", null: false
     t.uuid "answer_id", null: false
+    t.boolean "correct", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["answer_id"], name: "index_participant_answers_on_answer_id"
